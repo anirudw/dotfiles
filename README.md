@@ -1,1 +1,0 @@
-## `my trashy linux config`
