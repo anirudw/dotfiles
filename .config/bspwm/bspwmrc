@@ -1,0 +1,46 @@
+#! /bin/sh
+
+# Launch the keyboard shortcut daemon
+pgrep -x sxhkd > /dev/null || sxhkd &
+
+# Create 5 virtual workspaces
+bspc monitor -d I II III IV V
+
+# Minimalist Window Settings
+bspc config border_width         2
+bspc config window_gap          12
+bspc config split_ratio          0.52
+
+# Everforest Border Colors
+bspc config normal_border_color "#414B50"
+bspc config focused_border_color "#A7C080"
+
+# Set the background to the Everforest dark hard base color
+xsetroot -solid "#272E33" &
+
+# --- AUTOSTART APPLICATIONS ---
+
+# 1. Background (You've got this, but ensure it's early)
+feh --bg-fill ~/Pictures/wallpaper.png &
+
+# 2. Authentication & Environment (Critical for Brave and system apps)
+dbus-update-activation-environment --all &
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+gnome-keyring-daemon --start --components=secrets &
+
+# 3. Compositor (For those rounded corners and transparency)
+picom -b --config ~/.config/picom/picom.conf &
+
+# 4. Polybar (The 'Taskbar')
+# Using a loop ensures it waits for the previous instance to die
+pkill -q polybar
+while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
+polybar main &
+
+# 5. Optional: Network & Sound applets (The 'System Tray' feel)
+nm-applet &
+volumeicon &
+
+# Map a lonely Super key tap to Super + d
+killall xcape
+xcape -e 'Super_L=Super_L|d' &
