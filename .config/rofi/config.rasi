@@ -1,0 +1,35 @@
+configuration {
+  modes: [ combi ];
+  combi-modes: [ window, drun, run ];
+}
+
+@theme "gruvbox-light"
+
+
+prompt {
+
+  enabled: false;
+
+}
+
+entry {
+    placeholder: "Type here";
+    cursor: pointer;
+    size: 2.0px;
+} 
+
+
+
+element {
+  orientation: horizontal;
+  children: [ element-text, element-icon ];
+  spacing: 1px;
+}
+
+element-icon {
+    size: 2.0em;
+}
+
+element-text{
+	vertical-align: 0.5;
+}
